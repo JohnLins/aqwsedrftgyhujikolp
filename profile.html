@@ -185,7 +185,7 @@
     <script>
 
 
-
+    var SUBCOLL = "";
 
 
 
@@ -196,11 +196,9 @@ const instagram = params.get('instagram') || '';
 const number = params.get('number') || '';
 const snap = params.get('snap') || '';
 
-// API URL
-const apiUrl = `https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${number}&insta=${instagram}&snap=${snap}`;
 
-// Fetch data from the API
-fetch(apiUrl)
+
+fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${number}&insta=${instagram}&snap=${snap}`)
   .then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -214,6 +212,7 @@ fetch(apiUrl)
     // Get the rating list container
     const ratingList = document.querySelector('.rating-list');
     document.getElementById("name").innerHTML = data.name;
+      SUBCOLL = data.id;
     // Iterate through the reviews and append them to the rating list
     reviews.forEach((review) => {
       const { rating, tags, comment, base64pic } = review;
@@ -253,52 +252,107 @@ fetch(apiUrl)
 
 
 
+const form = document.getElementById('rating-form');
+const scoreInput = document.getElementById('score');
 
+form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
 
+    const score = scoreInput.value;
+    const tags = document.getElementById('tags').value;
+    const comment = document.getElementById('comment').value;
+    const pictureInput = document.getElementById('picture');
 
-        const form = document.getElementById('rating-form');
-        form.addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent form submission
+    // Ensure required fields are filled
+    if (!score || !comment) {
+        alert('Please provide a rating and a comment!');
+        return;
+    }
 
-            const score = document.getElementById('score').value;
-            const comment = document.getElementById('comment').value;
+    let base64pic = '';
 
-            if (!score || !comment) {
-                alert('Please provide a rating and a comment!');
-                return;
-            }
+    // Convert image to Base64 if provided
+    if (pictureInput.files.length > 0) {
+        const file = pictureInput.files[0];
+        base64pic = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]); // Get only the base64 string
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
 
+    // Prepare the data payload
+    const payload = {
+        subcollection: SUBCOLL,
+        rating: score,
+        tags,
+        comment,
+        base64pic,
+    };
+
+    try {
+        const response = await fetch(`https://web-production-5f62.up.railway.app/review`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
             alert('Review submitted successfully!');
-            form.reset();
-        });
+            form.reset(); // Clear the form
+            scoreInput.value = ''; // Clear the hidden score input
 
-
-         const ratingBlocks = document.querySelectorAll('.rating-block');
-    const scoreInput = document.getElementById('score');
-
-    ratingBlocks.forEach(block => {
-        block.addEventListener('click', () => {
-            // Remove the active class from all blocks
+            // Reset active state on rating blocks
+            const ratingBlocks = document.querySelectorAll('.rating-block');
             ratingBlocks.forEach(b => b.classList.remove('active'));
-
-            // Add the active class to the clicked block
-            block.classList.add('active');
-
-            // Set the hidden input value
-            scoreInput.value = block.getAttribute('data-value');
-        });
-    });
-
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent form submission
-
-        const score = scoreInput.value;
-        const comment = document.getElementById('comment').value;
-
-        if (!score || !comment) {
-            alert('Please provide a rating and a comment!');
-            return;
+        } else {
+            console.error('Error submitting review:', result);
+            alert('Failed to submit review. Please try again.');
         }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An unexpected error occurred. Please try again.');
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+        
 
         alert(`Review submitted successfully! Your rating: ${score}`);
         form.reset();
