@@ -253,8 +253,27 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
 
 
 const form = document.getElementById('rating-form');
-const scoreInput = document.getElementById('score');
 
+
+
+  const ratingBlocks = document.querySelectorAll('.rating-block');
+    const scoreInput = document.getElementById('score');
+
+    ratingBlocks.forEach(block => {
+        block.addEventListener('click', () => {
+            // Remove the active class from all blocks
+            ratingBlocks.forEach(b => b.classList.remove('active'));
+
+            // Add the active class to the clicked block
+            block.classList.add('active');
+
+            // Set the hidden input value
+            scoreInput.value = block.getAttribute('data-value');
+        });
+    });
+
+
+        
 form.addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent default form submission
 
