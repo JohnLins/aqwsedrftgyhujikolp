@@ -212,7 +212,8 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
     // Get the rating list container
     const ratingList = document.querySelector('.rating-list');
     document.getElementById("name").innerHTML = data.name;
-      SUBCOLL = data.id;
+    SUBCOLL = data.id;
+    console.log(SUBCOLL)
     // Iterate through the reviews and append them to the rating list
     reviews.forEach((review) => {
       const { rating, tags, comment, base64pic } = review;
@@ -238,6 +239,9 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
       // Append the rating block to the list
       ratingList.appendChild(ratingDiv);
     });
+
+
+      initializeForm();
   })
   .catch((error) => {
     console.error('Error fetching ratings:', error);
@@ -251,94 +255,97 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
 
 
 
-
-const form = document.getElementById('rating-form');
-
-
-
-  const ratingBlocks = document.querySelectorAll('.rating-block');
-    const scoreInput = document.getElementById('score');
-
-    ratingBlocks.forEach(block => {
-        block.addEventListener('click', () => {
-            // Remove the active class from all blocks
-            ratingBlocks.forEach(b => b.classList.remove('active'));
-
-            // Add the active class to the clicked block
-            block.classList.add('active');
-
-            // Set the hidden input value
-            scoreInput.value = block.getAttribute('data-value');
-        });
-    });
-
-
+function initializeForm() {
+            
+        const form = document.getElementById('rating-form');
         
-form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent default form submission
-
-    const score = scoreInput.value;
-    const tags = document.getElementById('tags').value;
-    const comment = document.getElementById('comment').value;
-    const pictureInput = document.getElementById('picture');
-
-    // Ensure required fields are filled
-    if (!score || !comment) {
-        alert('Please provide a rating and a comment!');
-        return;
-    }
-
-    let base64pic = '';
-
-    // Convert image to Base64 if provided
-    if (pictureInput.files.length > 0) {
-        const file = pictureInput.files[0];
-        base64pic = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]); // Get only the base64 string
-            reader.onerror = (error) => reject(error);
-            reader.readAsDataURL(file);
+        
+        
+          const ratingBlocks = document.querySelectorAll('.rating-block');
+            const scoreInput = document.getElementById('score');
+        
+            ratingBlocks.forEach(block => {
+                block.addEventListener('click', () => {
+                    // Remove the active class from all blocks
+                    ratingBlocks.forEach(b => b.classList.remove('active'));
+        
+                    // Add the active class to the clicked block
+                    block.classList.add('active');
+        
+                    // Set the hidden input value
+                    scoreInput.value = block.getAttribute('data-value');
+                });
+            });
+        
+        
+                
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+        
+            const score = scoreInput.value;
+            const tags = document.getElementById('tags').value;
+            const comment = document.getElementById('comment').value;
+            const pictureInput = document.getElementById('picture');
+        
+            // Ensure required fields are filled
+            if (!score || !comment) {
+                alert('Please provide a rating and a comment!');
+                return;
+            }
+        
+            let base64pic = '';
+        
+            // Convert image to Base64 if provided
+            if (pictureInput.files.length > 0) {
+                const file = pictureInput.files[0];
+                base64pic = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]); // Get only the base64 string
+                    reader.onerror = (error) => reject(error);
+                    reader.readAsDataURL(file);
+                });
+            }
+        
+            // Prepare the data payload
+            console.log(SUBCOLL)
+            const payload = {
+                subcollection: SUBCOLL,
+                rating: score,
+                tags: tags,
+                comment: comment,
+                base64pic: base64pic,
+            };
+        
+            try {
+                const response = await fetch(`https://web-production-5f62.up.railway.app/review`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+        
+                const result = await response.json();
+        
+                if (response.ok) {
+                    alert('Review submitted successfully!');
+                    form.reset(); // Clear the form
+                    scoreInput.value = ''; // Clear the hidden score input
+        
+                    // Reset active state on rating blocks
+                    const ratingBlocks = document.querySelectorAll('.rating-block');
+                    ratingBlocks.forEach(b => b.classList.remove('active'));
+                } else {
+                    console.error('Error submitting review:', result);
+                    alert('Failed to submit review. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An unexpected error occurred. Please try again.');
+            }
         });
-    }
 
-    // Prepare the data payload
-    const payload = {
-        subcollection: SUBCOLL,
-        rating: score,
-        tags,
-        comment,
-        base64pic,
-    };
-
-    try {
-        const response = await fetch(`https://web-production-5f62.up.railway.app/review`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            alert('Review submitted successfully!');
-            form.reset(); // Clear the form
-            scoreInput.value = ''; // Clear the hidden score input
-
-            // Reset active state on rating blocks
-            const ratingBlocks = document.querySelectorAll('.rating-block');
-            ratingBlocks.forEach(b => b.classList.remove('active'));
-        } else {
-            console.error('Error submitting review:', result);
-            alert('Failed to submit review. Please try again.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An unexpected error occurred. Please try again.');
-    }
-});
-
+}
 
 
 
