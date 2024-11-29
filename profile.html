@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GauchoGuys - Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #e0f7ff;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            margin: 20px;
+        }
+
+        header h1 {
+            color: #007BFF;
+            margin-bottom: 5px;
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            color: #555;
+            margin-top: 0;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            margin-top: 5px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .rating-list {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .rating {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .rating:last-child {
+            border-bottom: none;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #007BFF;
+            color: white;
+            padding: 2px 8px;
+            margin: 5px 2px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+         #rating-blocks {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+    }
+
+    .rating-block {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ccc;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .rating-block:hover {
+        background-color: #bbb;
+    }
+
+    .rating-block.active {
+        background-color: #007BFF;
+        color: white;
+        font-weight: bold;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🦝 GauchoGuys</h1>
+        <h2>Profile Page</h2>
+    </header>
+
+    <div class="form-container">
+        <h3>Rate <span id="name"></span></h3>
+        <form id="rating-form">
+            <label for="score">Rating (1-10)</label>
+            <div id="rating-blocks">
+                <!-- Blocks for each rating -->
+                <span class="rating-block" data-value="1">1</span>
+                <span class="rating-block" data-value="2">2</span>
+                <span class="rating-block" data-value="3">3</span>
+                <span class="rating-block" data-value="4">4</span>
+                <span class="rating-block" data-value="5">5</span>
+                <span class="rating-block" data-value="6">6</span>
+                <span class="rating-block" data-value="7">7</span>
+                <span class="rating-block" data-value="8">8</span>
+                <span class="rating-block" data-value="9">9</span>
+                <span class="rating-block" data-value="10">10</span>
+            </div>
+            <input type="hidden" id="score" name="score" required>
+
+
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" name="tags" placeholder="e.g., horny mf, cute irl, fun, funny">
+
+            <label for="comment">Comment</label>
+            <textarea id="comment" name="comment" rows="3" placeholder="Write your comment..." required></textarea>
+
+            <label for="picture">Upload a Picture</label>
+            <input type="file" id="picture" name="picture" accept="image/*">
+
+            <button type="submit">submit anonymous review</button>
+        </form>
+    </div>
+
+    <div class="rating-list">
+        <h3>Ratings</h3>
+        <!-- Sample Rating -->
+        <div class="rating">
+            <p><strong>Rating from other girls:</strong> 8/10</p>
+            <p><strong>Tags:</strong> <span class="tag">horny mf</span> <span class="tag">cute irl</span></p>
+            <p><strong>Comment:</strong> "Really sweet, but a bit too eager."</p>
+        </div>
+        <!-- Repeat similar blocks for additional ratings -->
+    </div>
+
+    <script>
+
+
+
+
+
+
+    // Extract URL parameters
+const params = new URLSearchParams(window.location.search);
+const name = params.get('name') || '';
+const instagram = params.get('instagram') || '';
+const number = params.get('number') || '';
+const snap = params.get('snap') || '';
+
+// API URL
+const apiUrl = `https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${number}&insta=${instagram}&snap=${snap}`;
+
+// Fetch data from the API
+fetch(apiUrl)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    // Get the reviews array from the response
+    const reviews = data.reviews || [];
+
+    // Get the rating list container
+    const ratingList = document.querySelector('.rating-list');
+    document.getElementById("name").innerHTML = data.name;
+    // Iterate through the reviews and append them to the rating list
+    reviews.forEach((review) => {
+      const { rating, tags, comment, base64pic } = review;
+
+      // Create a new rating block
+      const ratingDiv = document.createElement('div');
+      ratingDiv.classList.add('rating');
+
+      // Create rating content
+      const ratingContent = `
+        <p><strong>Rating from other girls:</strong> ${rating}/10</p>
+        <p><strong>Tags:</strong> ${tags
+          .split(',')
+          .map((tag) => `<span class="tag">${tag.trim()}</span>`) // Split tags and add styling
+          .join(' ')}</p>
+        <p><strong>Comment:</strong> "${comment}"</p>
+        ${base64pic ? `<br/><img src="${base64pic}" alt="Rating Image"/>` : ''}
+      `;
+
+      // Set the inner HTML of the rating block
+      ratingDiv.innerHTML = ratingContent;
+
+      // Append the rating block to the list
+      ratingList.appendChild(ratingDiv);
+    });
+  })
+  .catch((error) => {
+    console.error('Error fetching ratings:', error);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const form = document.getElementById('rating-form');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            const score = document.getElementById('score').value;
+            const comment = document.getElementById('comment').value;
+
+            if (!score || !comment) {
+                alert('Please provide a rating and a comment!');
+                return;
+            }
+
+            alert('Review submitted successfully!');
+            form.reset();
+        });
+
+
+         const ratingBlocks = document.querySelectorAll('.rating-block');
+    const scoreInput = document.getElementById('score');
+
+    ratingBlocks.forEach(block => {
+        block.addEventListener('click', () => {
+            // Remove the active class from all blocks
+            ratingBlocks.forEach(b => b.classList.remove('active'));
+
+            // Add the active class to the clicked block
+            block.classList.add('active');
+
+            // Set the hidden input value
+            scoreInput.value = block.getAttribute('data-value');
+        });
+    });
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent form submission
+
+        const score = scoreInput.value;
+        const comment = document.getElementById('comment').value;
+
+        if (!score || !comment) {
+            alert('Please provide a rating and a comment!');
+            return;
+        }
+
+        alert(`Review submitted successfully! Your rating: ${score}`);
+        form.reset();
+        ratingBlocks.forEach(b => b.classList.remove('active')); // Reset active state
+    });
+    </script>
+</body>
+</html>
