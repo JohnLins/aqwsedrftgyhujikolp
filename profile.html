@@ -229,7 +229,7 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
           .map((tag) => `<span class="tag">${tag.trim()}</span>`) 
           .join(' ')}</p>
         <p><strong>Comment:</strong> "${comment}"</p>
-        ${base64pic ? `<br/><img src="${base64pic}" alt="Rating Image"/>` : ''}
+        ${base64pic ? `<br/><img src="data:image/png;base64,${base64pic}" alt="Rating Image"/>` : ''}
       `;
 
       ratingDiv.innerHTML = ratingContent;
