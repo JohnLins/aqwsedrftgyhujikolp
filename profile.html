@@ -209,6 +209,11 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
     document.getElementById("name").innerHTML = data.name;
     SUBCOLL = data.id;
     console.log(SUBCOLL)
+
+    if(reviews.length == 0){
+        ratingList.innerHTML = "No reviews yet! Be the first to review him";
+    }
+      
     reviews.forEach((review) => {
     const { rating, tags, comment, base64pic } = review;
     sumreviews += rating;
@@ -218,7 +223,7 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
 
       
       const ratingContent = `
-        <p><strong>anonymous rates {data.name} a </strong> ${rating}/10</p>
+        <p><strong>anonymous rates ${data.name} a </strong> ${rating}/10</p>
         <p><strong>Tags:</strong> ${tags
           .split(',')
           .map((tag) => `<span class="tag">${tag.trim()}</span>`) 
@@ -228,8 +233,8 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
       `;
 
       ratingDiv.innerHTML = ratingContent;
-
-      document.getElementById("hisscore").innerHTML = sumreviews/reviews.length;
+      s = sumreviews/reviews.length;
+      document.getElementById("hisscore").innerHTML = s.toFixed(2) + " / 10";
         
       ratingList.appendChild(ratingDiv);
     });
@@ -323,12 +328,14 @@ function initializeForm() {
         
                 if (response.ok) {
                     alert('Review submitted successfully!');
-                    form.reset(); // Clear the form
-                    scoreInput.value = ''; // Clear the hidden score input
+                    location.reload(true);
+
+                    // form.reset(); // Clear the form
+                    // scoreInput.value = ''; // Clear the hidden score input
         
-                    // Reset active state on rating blocks
-                    const ratingBlocks = document.querySelectorAll('.rating-block');
-                    ratingBlocks.forEach(b => b.classList.remove('active'));
+                    // // Reset active state on rating blocks
+                    // const ratingBlocks = document.querySelectorAll('.rating-block');
+                    // ratingBlocks.forEach(b => b.classList.remove('active'));
                 } else {
                     console.error('Error submitting review:', result);
                     alert('Failed to submit review. Please try again.');
