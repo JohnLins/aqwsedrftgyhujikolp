@@ -139,6 +139,7 @@
     </header>
 
     <div class="form-container">
+        <b><h1 id="hisscore"></h1></b>
         <h3>Rate <span id="name"></span></h3>
         <form id="rating-form">
             <label for="score">Rating (1-10)</label>
@@ -173,23 +174,16 @@
 
     <div class="rating-list">
         <h3>Ratings</h3>
-        <!-- Sample Rating -->
-        <div class="rating">
-            <p><strong>Rating from other girls:</strong> 8/10</p>
-            <p><strong>Tags:</strong> <span class="tag">horny mf</span> <span class="tag">cute irl</span></p>
-            <p><strong>Comment:</strong> "Really sweet, but a bit too eager."</p>
-        </div>
-        <!-- Repeat similar blocks for additional ratings -->
+     
     </div>
 
     <script>
 
 
-    var SUBCOLL = "";
+var SUBCOLL = "";
 
 
 
-    // Extract URL parameters
 const params = new URLSearchParams(window.location.search);
 const name = params.get('name') || '';
 const instagram = params.get('instagram') || '';
@@ -206,37 +200,37 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
     return response.json();
   })
   .then((data) => {
-    // Get the reviews array from the response
+    
+      
     const reviews = data.reviews || [];
-
-    // Get the rating list container
+    sumreviews = 0;
+      
     const ratingList = document.querySelector('.rating-list');
     document.getElementById("name").innerHTML = data.name;
     SUBCOLL = data.id;
     console.log(SUBCOLL)
-    // Iterate through the reviews and append them to the rating list
     reviews.forEach((review) => {
-      const { rating, tags, comment, base64pic } = review;
+    const { rating, tags, comment, base64pic } = review;
+    sumreviews += rating;
+      
+    const ratingDiv = document.createElement('div');
+    ratingDiv.classList.add('rating');
 
-      // Create a new rating block
-      const ratingDiv = document.createElement('div');
-      ratingDiv.classList.add('rating');
-
-      // Create rating content
+      
       const ratingContent = `
-        <p><strong>Rating from other girls:</strong> ${rating}/10</p>
+        <p><strong>anonymous rates {data.name} a </strong> ${rating}/10</p>
         <p><strong>Tags:</strong> ${tags
           .split(',')
-          .map((tag) => `<span class="tag">${tag.trim()}</span>`) // Split tags and add styling
+          .map((tag) => `<span class="tag">${tag.trim()}</span>`) 
           .join(' ')}</p>
         <p><strong>Comment:</strong> "${comment}"</p>
         ${base64pic ? `<br/><img src="${base64pic}" alt="Rating Image"/>` : ''}
       `;
 
-      // Set the inner HTML of the rating block
       ratingDiv.innerHTML = ratingContent;
 
-      // Append the rating block to the list
+      document.getElementById("hisscore").innerHTML = sumreviews/reviews.length;
+        
       ratingList.appendChild(ratingDiv);
     });
 
