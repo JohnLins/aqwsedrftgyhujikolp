@@ -5,143 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GauchoGuys - Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #e0f7ff;
-            color: #333;
-        }
+     * {
+    box-sizing: border-box;
+}
 
-        header {
-            text-align: center;
-            margin: 20px;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e0f7ff;
+    color: #333;
+}
 
-        header h1 {
-            color: #007BFF;
-            margin-bottom: 5px;
-        }
+header {
+    text-align: center;
+    margin: 20px;
+}
 
-        header h2 {
-            font-size: 1.2rem;
-            color: #555;
-            margin-top: 0;
-        }
+header h1 {
+    color: #007BFF;
+    margin-bottom: 5px;
+}
 
-        .form-container {
-            
-            width: 100%;
-            
-            max-width: 500px;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
+header h2 {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 0;
+}
 
-        form {
-            display: flex;
-            flex-direction: column;
-        }
+.form-container,
+.rating-list {
+    width: 90%; /* Adjust width for mobile */
+    max-width: 500px; /* Keep max width for larger screens */
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
 
-        label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
+form {
+    display: flex;
+    flex-direction: column;
+}
 
-        input, textarea, select {
-            margin-top: 5px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
 
-        button {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+input, textarea, select {
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%; /* Ensure full width on mobile */
+}
 
-        button:hover {
-            background-color: #0056b3;
-        }
+button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-        .rating-list {
-            width: 100%;
-            max-width: 500px;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+button:hover {
+    background-color: #0056b3;
+}
 
-        .rating {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
+.rating {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
 
-        .rating:last-child {
-            border-bottom: none;
-        }
+.rating:last-child {
+    border-bottom: none;
+}
 
-        .tag {
-            display: inline-block;
-            background-color: #007BFF;
-            color: white;
-            padding: 2px 8px;
-            margin: 5px 2px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-        }
-         #rating-blocks {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-    }
+.tag {
+    display: inline-block;
+    background-color: #007BFF;
+    color: white;
+    padding: 2px 8px;
+    margin: 5px 2px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
 
-    .rating-block {
-        width: 30px;
-        height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #ccc;
-        border: 1px solid #aaa;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.2s ease;
-    }
+#rating-blocks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
 
-    .rating-block:hover {
-        background-color: #bbb;
-    }
+.rating-block {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
 
-    .rating-block.active {
-        background-color: #007BFF;
-        color: white;
-        font-weight: bold;
-    }
+.rating-block:hover {
+    background-color: #bbb;
+}
+
+.rating-block.active {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+}
+
+#scorebox {
+    width: 90%; /* Make scorebox width responsive */
+    max-width: 500px;
+    height: 50px;
+    padding: 7px;
+    margin: 3px;
+    border-radius: 3px;
+}
+
     </style>
 </head>
 <body>
     <header>
-        <a href="https://gauchoguys.com"><h1>🦝 GauchoGuys</h1></a>
+        <a href="https://gauchoguys.com" style="text-decoration: none;"><h1>🦝 GauchoGuys</h1></a>
         <h2>Profile Page</h2>
     </header>
 
     <div class="form-container">
-        <div style="width: auto; height:50px;padding:7px;margin: 3px;border-radius:3px;" id="scorebox"><b><h1 id="hisscore"></h1></b></div>
+        <div id="scorebox"><b><h1 id="hisscore"></h1></b></div>
         <h3>Rate <span id="name" style="font-size: 2em"></span></h3>
         <form id="rating-form">
             <label for="score">Rating (1-10)</label>
