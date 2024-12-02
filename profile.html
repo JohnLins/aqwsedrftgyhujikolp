@@ -130,13 +130,22 @@ button:hover {
 }
 
 #scorebox {
-    width: 90%; /* Make scorebox width responsive */
+    width: 100%; /* Make scorebox width responsive */
     max-width: 500px;
     height: 55px;
-    margin: 3px;
-    border-radius: 3px;
-    padding: 0.5px
-    font-size: 1.1em;
+    
+    border-radius: 5px;
+    padding: 1px;
+    background-color: green;
+}
+
+#hisscore {
+    margin: 9px;
+    text-shadow: 
+        1px 1px 0px white,   /* Bottom-right */
+       -1px -1px 0px white,  /* Top-left */
+        -1px 1px 0px white,  /* Bottom-left */
+        1px -1px 0px white;  /* Top-right */
 }
 
     </style>
