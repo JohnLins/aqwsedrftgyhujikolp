@@ -139,7 +139,7 @@
     </header>
 
     <div class="form-container">
-        <div style="width: 50px; height:50px;padding:5px;margin: 3px;" id="scorebox"><b><h1 id="hisscore"></h1></b></div>
+        <div style="width: auto; height:50px;padding:7px;margin: 3px;border-radius:3px;" id="scorebox"><b><h1 id="hisscore"></h1></b></div>
         <h3>Rate <span id="name"></span></h3>
         <form id="rating-form">
             <label for="score">Rating (1-10)</label>
@@ -236,12 +236,12 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
       s = sumreviews/reviews.length;
       document.getElementById("hisscore").innerHTML = s.toFixed(2) + " / 10";
 
-        scorecolor = "yellow";
+        scorecolor = "#f5d98c";
         if(s > 6){
-            scorecolor = "green";
+            scorecolor = "#a3e396";
         }
         if(s < 4){
-            scorecolor = "red";
+            scorecolor = "#ff858f";
         }
         
       document.getElementById("scorebox").style.backgroundColor = scorecolor;
