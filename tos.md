@@ -23,6 +23,8 @@ We reserve the right to remove content that violates these rules and to suspend 
 ### 4. Legal Justification
 The App is protected under the First Amendment of the U.S. Constitution and Section 230 of the Communications Decency Act (47 U.S. Code § 230). As a provider of an interactive computer service, we are not liable for content created or posted by our users.
 
+Section 230 of the Communications Decency Act (CDA) is a crucial piece of U.S. internet legislation passed in 1996. It provides immunity to online platforms from being held liable for user-generated content. 
+
 ### 5. Complaints and Content Removal
 If you believe a post is defamatory or violates these terms, you may email a removal request to the address provided above. While we review all requests, we are not obligated to remove any content. Removal decisions are at the sole discretion of the platform.
 
