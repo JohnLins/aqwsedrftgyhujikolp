@@ -134,12 +134,12 @@
 </head>
 <body>
     <header>
-        <h1>🦝 GauchoGuys</h1>
+        <a href="https://gauchoguys.com"><h1>🦝 GauchoGuys</h1></a>
         <h2>Profile Page</h2>
     </header>
 
     <div class="form-container">
-        <b><h1 id="hisscore"></h1></b>
+        <div style="width: 50px; height:50px;padding:5px;margin: 3px;" id="scorebox"><b><h1 id="hisscore"></h1></b></div>
         <h3>Rate <span id="name"></span></h3>
         <form id="rating-form">
             <label for="score">Rating (1-10)</label>
@@ -235,6 +235,16 @@ fetch(`https://web-production-5f62.up.railway.app/fetch?name=${name}&number=${nu
       ratingDiv.innerHTML = ratingContent;
       s = sumreviews/reviews.length;
       document.getElementById("hisscore").innerHTML = s.toFixed(2) + " / 10";
+
+        scorecolor = "yellow";
+        if(s > 6){
+            scorecolor = "green";
+        }
+        if(s < 4){
+            scorecolor = "red";
+        }
+        
+      document.getElementById("scorebox").style.backgroundColor = scorecolor;
         
       ratingList.appendChild(ratingDiv);
     });
